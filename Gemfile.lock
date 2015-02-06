@@ -4,6 +4,7 @@ GEM
     coderay (1.1.0)
     daemons (1.1.9)
     eventmachine (1.0.6)
+    json (1.8.1)
     method_source (0.8.2)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -29,6 +30,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  json
   pry
   shotgun
   sinatra
