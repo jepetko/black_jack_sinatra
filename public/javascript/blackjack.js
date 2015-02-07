@@ -1,14 +1,18 @@
 (function(angular) {
     "use strict";
 
-    angular.module('blackjack',[])
+    angular.module('blackjack',['ngResource'])
     .controller('NameCtrl', ['$scope', function($scope) {
 
     }])
-    .module('Players', ['$resource', function($resource) {
-        return $resource('players/:id', null);
+    .factory('Players', ['$resource', function($resource) {
+        return $resource('players.json/:id', null, {'get': {'isArray': true}});
     }])
-    .controller('PlayCtrl',['$scope', function($scope) {
-
+    .factory('Dealers', ['$resource', function($resource) {
+        return $resource('dealers.json/:id', null);
+    }])
+    .controller('PlayCtrl',['$scope', 'Players', 'Dealers', function($scope, Players, Dealers) {
+        $scope.players = Players.get();
+        $scope.dealer = Dealers.get();
     }]);
 })(angular);

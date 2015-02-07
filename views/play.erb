@@ -1,3 +1,38 @@
 <div data-ng-controller="PlayCtrl">
-    <h2>Dear <%= params[:name]%>, welcome to this Black Jack session.</h2>
+  <h2>Dear <%= params[:name] %>, welcome to this Black Jack game.</h2>
+
+  <div class="container">
+    <!-- players -->
+    <div class="row">
+      <div class="col-md-4" data-ng-repeat="player in players">
+        {{player.name}}
+        Your current cards are:
+        <ul>
+          <li data-ng-repeat="c in player.cards">{{c.type}}</li>
+        </ul>
+      </div>
+    </div>
+    <!-- table -->
+    <div class="row">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+    <!-- dealer -->
+    <div class="row">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4">
+        {{dealer.name}}
+        <ul>
+          <li data-ng-repeat="c in dealer.cards">{{c.type}}</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+  </div>
 </div>
