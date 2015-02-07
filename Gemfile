@@ -6,3 +6,5 @@ gem 'thin'
 gem 'pry'
 gem 'shotgun'
 gem 'json'
+
+gem 'rspec'
