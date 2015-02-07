@@ -11,8 +11,17 @@
     .factory('Dealers', ['$resource', function($resource) {
         return $resource('dealers.json/:id', null);
     }])
-    .controller('PlayCtrl',['$scope', 'Players', 'Dealers', function($scope, Players, Dealers) {
-        $scope.players = Players.get();
-        $scope.dealer = Dealers.get();
+    .controller('PlayCtrl',['$scope', '$http', 'Players', 'Dealers', function($scope, $http, Players, Dealers) {
+        $scope.kickOff = function() {
+            $http.get('/start')
+            .success(function(data, status, headers, config) {
+                $scope.init();
+            });
+        };
+        $scope.init = function() {
+            $scope.players = Players.get();
+            $scope.dealer = Dealers.get();
+        };
+        $scope.init();
     }]);
 })(angular);

@@ -108,7 +108,7 @@ class BlackJack
       sorted.last
     end
 
-    def play
+    def give_first_cards
       # give everyone two cards
       say '*********************************'
       say 'Giving cards:'
@@ -120,42 +120,52 @@ class BlackJack
         print_results {|player| player.sum}
       end
       say '*********************************'
+    end
+
+    def check_done_conditions
+      if dealer.busted?
+        say "Dealer lost! Dealer's score: #{dealer.sum}"
+        say 'Here are the final results:'
+        print_results {|player| player.sum}
+        return true
+      elsif won?(dealer)
+        say "Dealer won! Dealer's score: #{dealer.sum}"
+        return true
+      elsif dealer.should_stay?
+        say "Dealer's limit reached: #{dealer.sum}"
+        say 'Here are the final results:'
+        print_results {|player| player.sum}
+        return true
+      end
+      false
+    end
+
+    def play
+      give_first_cards
 
       loop do
-        if dealer.busted?
-          say "Dealer lost! Dealer's score: #{dealer.sum}"
-          say 'Here are the final results:'
-          print_results {|player| player.sum}
+        if check_done_conditions
+          print_winner detect_winner
           break
-        elsif won?(dealer)
-          say "Dealer won! Dealer's score: #{dealer.sum}"
-          break
-        elsif dealer.should_stay?
-          say "Dealer's limit reached: #{dealer.sum}"
-          say 'Here are the final results:'
-          print_results {|player| player.sum}
-          break
-        else
-          # detect the next player. Player can be asked:
-          # a) if he is not busted
-          # b) if he is not the *dealer* whose score >= 17 (then he must stay)
-          accept_player = lambda {|player|
-            if player.busted?
-              return false
-            else
-              if player.dealer?
-                return !player.should_stay?
-              end
-            end
-            true
-          }
-          player = next_player accept_player
-          say '*********************************'
-          say "Dear #{player.name}, you are the next player."
-          handle_player player
         end
+        # detect the next player. Player can be asked:
+        # a) if he is not busted
+        # b) if he is not the *dealer* whose score >= 17 (then he must stay)
+        accept_player = lambda {|player|
+          if player.busted?
+            return false
+          else
+            if player.dealer?
+              return !player.should_stay?
+            end
+          end
+          true
+        }
+        player = next_player accept_player
+        say '*********************************'
+        say "Dear #{player.name}, you are the next player."
+        handle_player player
       end
-      print_winner detect_winner
     end
   end
 
