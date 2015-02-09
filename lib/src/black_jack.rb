@@ -92,7 +92,7 @@ class BlackJack
 
 
     def won?(player)
-      player.sum == 21 && !detect_winner.nil?
+      player.sum == 21 && detect_winner == player
     end
 
     def detect_winner

@@ -40,29 +40,39 @@ get '/draw' do
     black_jack = session[:black_jack]
     answer = params[:answer]
 
-    all = players + dealer
+    if black_jack.check_done_conditions == true
+      winner = black_jack.detect_winner
+      if !winner.nil?
+        return winner.as_hash.to_json
+      end
+    end
+
+    all = black_jack.players + [black_jack.dealer]
     all.each do |player|
-      if check_done_conditions
+      if black_jack.check_done_conditions == true
+        return black_jack.detect_winner.as_hash.to_json
+      end
+      if player.busted?
+        continue
+      end
+      if player.dealer?
+        if player.should_stay?
+          continue
+        end
+      end
+      if player.name == name
+        if answer != 'Y'
+          continue
+        end
+      end
+      card = black_jack.stack.give
+      if card.nil?
         break
       end
-      # detect the next player. Player can be asked:
-      # a) if he is not busted
-      # b) if he is not the *dealer* whose score >= 17 (then he must stay)
-      accept_player = lambda {|player|
-        if player.busted?
-          return false
-        else
-          if player.dealer?
-            return !player.should_stay?
-          end
-        end
-        true
-      }
-      player = next_player accept_player
-      card = stack.give
       player.draw(card)
     end
   end
+  {:message => 'running'}.as_hash.to_json
 end
 
 get '/players.json' do

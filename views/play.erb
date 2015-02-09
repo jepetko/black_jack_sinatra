@@ -1,5 +1,5 @@
-<div data-ng-controller="PlayCtrl">
-  <h2>Dear <%= params[:name] %>, welcome to this Black Jack game.</h2>
+<div data-ng-controller="PlayCtrl" data-ng-init="ownName = '<%= params[:name] %>';">
+  <h2>Dear , welcome to this Black Jack game.</h2>
   <button type="button" class="btn btn-danger" ng-click="kickOff()">Kick off the game!</button>
 
   <div class="container">
@@ -7,6 +7,10 @@
     <div class="row">
       <div class="col-md-4" data-ng-repeat="player in players">
         {{player.name}}
+        <div data-ng-if="ownName == player.name">
+            <button type="button" class="btn btn-primary" ng-click="draw('Y')">Draw</button>
+            <button type="button" class="btn btn-default" ng-click="draw('N')">Stay</button>
+        </div>
         Your current cards are:
         <ul>
           <li data-ng-repeat="c in player.cards">{{c.type}}</li>
