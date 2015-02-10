@@ -11,10 +11,10 @@ class CardStack
       (2..10).each do |n|
         BASIC_STACK << Card.new(n)
       end
-      BASIC_STACK << Card.new('Jack',10)
-      BASIC_STACK << Card.new('Queen',10)
-      BASIC_STACK << Card.new('King',10)
-      BASIC_STACK << Card.new('Ace',11)
+      BASIC_STACK << Card.new('Jack',nil,10)
+      BASIC_STACK << Card.new('Queen',nil,10)
+      BASIC_STACK << Card.new('King',nil,10)
+      BASIC_STACK << Card.new('Ace',nil,11)
     end
   end
 
