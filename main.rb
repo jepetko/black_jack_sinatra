@@ -36,22 +36,32 @@ end
 
 get '/draw' do
   if !session[:black_jack].nil?
-    name = session[:name]
     black_jack = session[:black_jack]
-    answer = params[:answer]
-
-    if black_jack.check_done_conditions == true
-      winner = black_jack.detect_winner
-      if !winner.nil?
-        return winner.as_hash.to_json
+    # check whether the game is done and
+    # return the state of the game after this round
+    play_done = lambda do
+      if black_jack.check_done_conditions == true
+        winner = black_jack.detect_winner
+        if winner.nil?
+          return {:state => 'done', :info => 'no winner'}
+        else
+          return {:state => 'done', :info => 'winner'}
+        end
       end
+      {:state => 'running'}
     end
+
+    state = play_done.call
+    if state[:state] == 'done'
+      return state.to_json
+    end
+
+    # let the players draw a card
+    name = session[:name]
+    answer = params[:answer]
 
     all = black_jack.players + [black_jack.dealer]
     all.each do |player|
-      if black_jack.check_done_conditions == true
-        return black_jack.detect_winner.as_hash.to_json
-      end
       if player.busted?
         continue
       end
@@ -72,7 +82,9 @@ get '/draw' do
       player.draw(card)
     end
   end
-  {:message => 'running'}.as_hash.to_json
+
+  # return the state of the game after this round
+  play_done.call.to_json
 end
 
 get '/players.json' do
@@ -90,6 +102,7 @@ get '/players.json' do
       if p.name == winner.name
         hash[idx][:winner] = true
       end
+      hash[idx][:sum] = p.sum
     end
     hash.to_json
   end
@@ -100,6 +113,12 @@ get '/dealers.json' do
   if session[:black_jack].nil?
     {}.to_json
   else
-    session[:black_jack].dealer.as_hash.to_json
+    black_jack = session[:black_jack]
+    dealer = black_jack.dealer
+    hash = dealer.as_hash
+    hash[:busted] = dealer.busted?
+    hash[:winner] = black_jack.won?(dealer)
+    hash[:sum] = dealer.sum
+    hash.to_json
   end
 end
