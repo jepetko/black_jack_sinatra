@@ -186,7 +186,7 @@ describe 'Black Jack Logic' do
         it 'returns true' do
           @logic.players.first.draw Card.new(2)
           @logic.players.last.draw Card.new(10)
-          @logic.players.last.draw Card.new('Ace', 11)
+          @logic.players.last.draw Card.new('Ace', nil, 11)
 
           expect(@logic.won?(@logic.players.last)).to be(true)
         end
@@ -199,7 +199,7 @@ describe 'Black Jack Logic' do
           @logic.players.first.draw Card.new(2)
 
           @logic.players.last.draw Card.new(10)
-          @logic.players.last.draw Card.new('Ace', 11)
+          @logic.players.last.draw Card.new('Ace', nil, 11)
 
           expect(@logic.won?(@logic.players.first)).to be(false)
           expect(@logic.won?(@logic.players.last)).to be(false)

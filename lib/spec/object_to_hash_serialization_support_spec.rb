@@ -14,7 +14,7 @@ describe 'ObjectToHashSerializationSupport' do
   it 'should convert the object to a hash' do
     hash = @player.as_hash
 
-    expected_hash = {:name => 'PLAYER', :dealer => false, :cards => [{:type => '10', :default_value => '10'}]}
+    expected_hash = {:name => 'PLAYER', :dealer => false, :cards => [{:type => '10', :sort => {}, :default_value => '10'}]}
     expect(hash).to eq(expected_hash)
   end
 

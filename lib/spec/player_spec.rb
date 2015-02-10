@@ -54,7 +54,7 @@ describe 'Player' do
 
       context 'when there is an ace and the 21 points mark is exceeded' do
         it 'counts an ace card as 1 (one) point' do
-          @p.draw Card.new('Ace', 1)
+          @p.draw Card.new('Ace', nil, 1)
           expect(@p.sum).to be(15)
         end
       end
@@ -65,7 +65,7 @@ describe 'Player' do
       it 'returns true if the SUM is greater than 21' do
         @p.draw Card.new(2)
         @p.draw Card.new(10)
-        @p.draw Card.new('King',10)
+        @p.draw Card.new('King',nil, 10)
 
         expect(@p.busted?).to be(true)
       end
