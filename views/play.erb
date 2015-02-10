@@ -1,12 +1,16 @@
 <div data-ng-controller="PlayCtrl" data-ng-init="ownName = '<%= params[:name] %>';">
   <h2>Dear , welcome to this Black Jack game.</h2>
   <button type="button" class="btn btn-danger" ng-click="kickOff()" ng-disabled="areFirstCardsGiven()">Kick off the game!</button>
-
+  <button type="button" class="btn btn-danger" ng-click="replay()" ng-disabled="isGameRunning()">Replay!</button>
   <div class="container">
     <!-- players -->
     <div class="row">
       <div class="col-md-4" data-ng-repeat="player in players">
+        <h3>
         {{player.name}}
+        <span class="label label-danger" ng-show="player.busted===true">BUSTED</span>
+        <span class="label label-success" ng-show="player.winner===true">WINNER</span>
+        </h3>
         <div data-ng-if="ownName == player.name">
             <button type="button" class="btn btn-primary" ng-click="draw('Y')" ng-disabled="!canPlayerDraw(player)">Draw</button>
             <button type="button" class="btn btn-default" ng-click="draw('N')" ng-disabled="!canPlayerDraw(player)">Stay</button>

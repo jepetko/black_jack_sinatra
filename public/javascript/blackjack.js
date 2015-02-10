@@ -21,7 +21,10 @@
         };
         $scope.canPlayerDraw = function(player) {
             return typeof player.cards !== 'undefined' && player.cards.length >= 2;
-        }
+        };
+        $scope.isGameRunning = function() {
+            return typeof $scope.lastResponse !== 'undefined' && $scope.lastResponse.state !== 'done';
+        };
         $scope.kickOff = function() {
             $http.get('/start')
             .success(function(data, status, headers, config) {
@@ -31,9 +34,7 @@
         $scope.draw = function(answer) {
             $http.get('/draw', {params: {answer: answer}})
             .success(function(data, status, headers, config) {
-                if(data && data.state === 'done') {
-                    alert('game done: ' + data.info);
-                }
+                $scope.lastResponse = data;
                 $scope.init();
             });
         };
