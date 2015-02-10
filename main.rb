@@ -93,15 +93,15 @@ get '/players.json' do
     [].to_json
   else
     black_jack = session[:black_jack]
-    winner = black_jack.detect_winner
+
+    winner = nil
+    if black_jack.check_done_conditions == true
+      winner = black_jack.detect_winner
+    end
     hash = black_jack.players.as_hash
     black_jack.players.each_with_index do |p,idx|
-      if p.busted?
-        hash[idx][:busted] = true
-      end
-      if p.name == winner.name
-        hash[idx][:winner] = true
-      end
+      hash[idx][:busted] = p.busted?
+      hash[idx][:winner] = !winner.nil? && p.name == winner.name
       hash[idx][:sum] = p.sum
     end
     hash.to_json
