@@ -2,7 +2,7 @@ module ObjectToHashSerializationSupport
 
   private
   def is_primitive(val)
-    val.is_a?(String) || val.is_a?(Fixnum) || val == true || val == false
+    val.is_a?(String) || val.is_a?(Fixnum) || val == true || val == false || val.is_a?(Symbol)
   end
 
   def as_hash
