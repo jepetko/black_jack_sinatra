@@ -136,6 +136,9 @@ class BlackJack
         say 'Here are the final results:'
         print_results {|player| player.sum}
         return true
+      elsif stack.empty?
+        say 'Card stack is empty'
+        return true
       end
       false
     end
