@@ -21,6 +21,9 @@
         $scope.draw = function(answer) {
             $http.get('/draw', {params: {answer: answer}})
             .success(function(data, status, headers, config) {
+                if(data && data.state === 'done') {
+                    alert('game done: ' + data.info);
+                }
                 $scope.init();
             });
         };
