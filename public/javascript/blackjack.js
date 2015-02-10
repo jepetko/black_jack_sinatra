@@ -12,6 +12,16 @@
         return $resource('dealers.json/:id', null);
     }])
     .controller('PlayCtrl',['$scope', '$http', 'Players', 'Dealers', function($scope, $http, Players, Dealers) {
+        $scope.areFirstCardsGiven = function() {
+            var firstPlayer = $scope.players[0];
+            if(typeof firstPlayer === 'undefined') {
+                return false;
+            }
+            return typeof firstPlayer.cards !== 'undefined' && firstPlayer.cards.length >= 0;
+        };
+        $scope.canPlayerDraw = function(player) {
+            return typeof player.cards !== 'undefined' && player.cards.length >= 2;
+        }
         $scope.kickOff = function() {
             $http.get('/start')
             .success(function(data, status, headers, config) {
