@@ -8,28 +8,42 @@
     .factory('Players', ['$resource', function($resource) {
         return $resource('players.json/:id', null, {'get': {'isArray': true}});
     }])
-    .factory('Dealers', ['$resource', function($resource) {
-        return $resource('dealers.json/:id', null);
-    }])
-    .controller('PlayCtrl',['$scope', '$http', 'Players', 'Dealers', function($scope, $http, Players, Dealers) {
+    .controller('PlayCtrl',['$scope', '$http', 'Players', function($scope, $http, Players) {
         $scope.areFirstCardsGiven = function() {
             var firstPlayer = $scope.players[0];
-            if(typeof firstPlayer === 'undefined') {
+            if(!firstPlayer) {
                 return false;
             }
-            return typeof firstPlayer.cards !== 'undefined' && firstPlayer.cards.length >= 0;
+            return firstPlayer.cards && firstPlayer.cards.length >= 0;
         };
         $scope.canPlayerDraw = function(player) {
-            return typeof player.cards !== 'undefined' && player.cards.length >= 2;
+            return player.cards && player.cards.length >= 2 && player.busted === false;
         };
         $scope.isGameRunning = function() {
-            return typeof $scope.lastResponse !== 'undefined' && $scope.lastResponse.state !== 'done';
+            if($scope.lastResponse && $scope.lastResponse.state !== 'done') {
+                return true;
+            }
+            for(var i=0;i<$scope.players.length;i++) {
+                if($scope.players[i].winner === true) {
+                    return false;
+                }
+            }
+            return true;
         };
         $scope.kickOff = function() {
             $http.get('/start')
             .success(function(data, status, headers, config) {
                 $scope.init();
             });
+        };
+        $scope.replay = function() {
+            if(typeof $scope.ownName !== 'undefined') {
+                $scope.lastResponse = null;
+                $http.get('/replay')
+                .success(function(data,status,headers,config) {
+                    $scope.init();
+                });
+            }
         };
         $scope.draw = function(answer) {
             $http.get('/draw', {params: {answer: answer}})
@@ -40,7 +54,6 @@
         };
         $scope.init = function() {
             $scope.players = Players.get();
-            $scope.dealer = Dealers.get();
         };
         $scope.init();
     }]);

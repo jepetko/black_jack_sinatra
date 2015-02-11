@@ -4,6 +4,7 @@ require 'json'
 require_relative 'lib/src/black_jack.rb'
 require_relative 'lib/src/support/black_jack_interactive_adapter.rb'
 require_relative 'lib/src/support/object_to_hash_serialization_support.rb'
+require_relative 'lib/src/support/black_jack_utils.rb'
 
 use Rack::Session::Cookie, :key => 'rack.session',
                            :path => '/',
@@ -16,12 +17,13 @@ get '/' do
 	erb :index
 end
 
+get '/replay' do
+  BlackJackUtils.create_game!(session)
+end
+
 post '/play' do
   session[:name] = params[:name]
-
-  black_jack = BlackJack.new
-  session[:black_jack] = black_jack
-  black_jack.kick_off? { session[:name] }
+  BlackJackUtils.create_game!(session)
   erb :play
 end
 
@@ -37,23 +39,11 @@ end
 get '/draw' do
   if !session[:black_jack].nil?
     black_jack = session[:black_jack]
-    # check whether the game is done and
-    # return the state of the game after this round
-    play_done = lambda do
-      if black_jack.check_done_conditions == true
-        winner = black_jack.detect_winner
-        if winner.nil?
-          return {:state => 'done', :info => 'no winner'}
-        else
-          return {:state => 'done', :info => 'winner'}
-        end
-      end
-      {:state => 'running'}
-    end
 
-    state = play_done.call
-    if state[:state] == 'done'
-      return state.to_json
+    # check whether the game is done..
+    state_hash = BlackJackUtils.get_game_state_as_hash(session)
+    if state_hash[:state] == 'done'
+      return state_hash.to_json
     end
 
     # let the players draw a card
@@ -82,43 +72,11 @@ get '/draw' do
       player.draw(card)
     end
   end
-
   # return the state of the game after this round
-  play_done.call.to_json
+  BlackJackUtils.get_game_state_as_hash(session).to_json
 end
 
 get '/players.json' do
   content_type :json
-  if session[:black_jack].nil?
-    [].to_json
-  else
-    black_jack = session[:black_jack]
-
-    winner = nil
-    if black_jack.check_done_conditions == true
-      winner = black_jack.detect_winner
-    end
-    hash = black_jack.players.as_hash
-    black_jack.players.each_with_index do |p,idx|
-      hash[idx][:busted] = p.busted?
-      hash[idx][:winner] = !winner.nil? && p.name == winner.name
-      hash[idx][:sum] = p.sum
-    end
-    hash.to_json
-  end
-end
-
-get '/dealers.json' do
-  content_type :json
-  if session[:black_jack].nil?
-    {}.to_json
-  else
-    black_jack = session[:black_jack]
-    dealer = black_jack.dealer
-    hash = dealer.as_hash
-    hash[:busted] = dealer.busted?
-    hash[:winner] = black_jack.won?(dealer)
-    hash[:sum] = dealer.sum
-    hash.to_json
-  end
+  BlackJackUtils.get_players_as_hash(session)
 end

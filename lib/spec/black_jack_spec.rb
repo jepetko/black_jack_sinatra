@@ -175,10 +175,14 @@ describe 'Black Jack Logic' do
 
     describe 'won? method' do
 
-      context 'returns false if the player has less than 21 points' do
-        it 'returns false' do
-          @logic.players.first.draw Card.new(10)
-          expect(@logic.won?(@logic.players.first)).to be(false)
+      context 'the player has more points than the other players' do
+        it 'returns true' do
+          @logic.players.each do |p|
+            p.draw Card.new(5)
+          end
+          @logic.players.last.draw Card.new(1)
+
+          expect(@logic.won?(@logic.players.last)).to be(true)
         end
       end
 

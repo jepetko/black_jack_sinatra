@@ -16,7 +16,7 @@ describe 'Player' do
     3.times { |i| @players << Player.new("Player #{i}")}
   end
 
-  context 'for dealer' do
+  context 'for the dealer' do
     it 'should_draw? returns true if the dealer has less than 17 points' do
       @dealer.draw Card.new(10)
       @dealer.draw Card.new(6)

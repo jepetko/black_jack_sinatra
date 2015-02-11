@@ -90,9 +90,13 @@ class BlackJack
       end
     end
 
-
     def won?(player)
-      player.sum == 21 && detect_winner == player
+      player == detect_winner
+    end
+
+    def are_all_players_busted?
+      active_players = players.select { |p| !p.busted?}
+      active_players.empty?
     end
 
     def detect_winner
@@ -128,11 +132,16 @@ class BlackJack
         say 'Here are the final results:'
         print_results {|player| player.sum}
         return true
-      elsif won?(dealer)
+      elsif dealer.sum == 21 && won?(dealer)
         say "Dealer won! Dealer's score: #{dealer.sum}"
         return true
       elsif dealer.should_stay?
         say "Dealer's limit reached: #{dealer.sum}"
+        say 'Here are the final results:'
+        print_results {|player| player.sum}
+        return true
+      elsif are_all_players_busted?
+        say 'All players are busted!'
         say 'Here are the final results:'
         print_results {|player| player.sum}
         return true
