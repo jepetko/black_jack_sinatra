@@ -53,16 +53,16 @@ get '/draw' do
     all = black_jack.players + [black_jack.dealer]
     all.each do |player|
       if player.busted?
-        continue
+        next
       end
       if player.dealer?
         if player.should_stay?
-          continue
+          next
         end
       end
       if player.name == name
         if answer != 'Y'
-          continue
+          next
         end
       end
       card = black_jack.stack.give
