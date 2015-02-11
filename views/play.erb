@@ -1,7 +1,7 @@
 <div data-ng-controller="PlayCtrl" data-ng-init="ownName = '<%= params[:name] %>';">
   <h2>Dear , welcome to this Black Jack game.</h2>
   <button type="button" class="btn btn-danger" ng-click="kickOff()" ng-disabled="areFirstCardsGiven()">Kick off the game!</button>
-  <button type="button" class="btn btn-danger" ng-click="replay()" ng-disabled="isGameRunning()">Replay!</button>
+  <button type="button" class="btn btn-danger" ng-click="replay()">Reset game!</button>
   <div class="container">
     <!-- players -->
     <div class="row">
