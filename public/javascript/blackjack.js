@@ -19,17 +19,6 @@
         $scope.canPlayerDraw = function(player) {
             return player.cards && player.cards.length >= 2 && player.busted === false;
         };
-        $scope.isGameRunning = function() {
-            if($scope.lastResponse && $scope.lastResponse.state !== 'done') {
-                return true;
-            }
-            for(var i=0;i<$scope.players.length;i++) {
-                if($scope.players[i].winner === true) {
-                    return false;
-                }
-            }
-            return true;
-        };
         $scope.kickOff = function() {
             $http.get('/start')
             .success(function(data, status, headers, config) {
