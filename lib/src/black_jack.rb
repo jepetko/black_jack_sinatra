@@ -135,11 +135,6 @@ class BlackJack
       elsif dealer.sum == 21 && won?(dealer)
         say "Dealer won! Dealer's score: #{dealer.sum}"
         return true
-      elsif dealer.should_stay?
-        say "Dealer's limit reached: #{dealer.sum}"
-        say 'Here are the final results:'
-        print_results {|player| player.sum}
-        return true
       elsif are_all_players_busted?
         say 'All players are busted!'
         say 'Here are the final results:'
