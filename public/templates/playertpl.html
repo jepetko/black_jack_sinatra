@@ -1,0 +1,14 @@
+<h3>
+    {{player.name}}
+    <span class="label label-danger" ng-show="player.busted===true">BUSTED</span>
+    <span class="label label-success" ng-show="player.winner===true">WINNER</span>
+</h3>
+<div data-ng-if="ownName == player.name">
+    <button type="button" class="btn btn-primary" ng-click="draw('Y')" ng-disabled="!canPlayerDraw(player)">Draw</button>
+    <button type="button" class="btn btn-default" ng-click="draw('N')" ng-disabled="!canPlayerDraw(player)">Stay</button>
+</div>
+Your current cards are:
+<ul>
+    <li data-ng-repeat="c in player.cards">{{c.type}}</li>
+</ul>
+Sum: {{player.sum}}
