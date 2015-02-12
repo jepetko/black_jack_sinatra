@@ -19,9 +19,18 @@
         $scope.canPlayerDraw = function(player) {
             return player.cards && player.cards.length >= 2 && player.busted === false;
         };
+        $scope.isGameOver = function() {
+            if(this.lastResponse != null) {
+                if(this.lastResponse.state === 'done') {
+                    return true;
+                }
+            }
+            return false;
+        };
         $scope.kickOff = function() {
             $http.get('/start')
             .success(function(data, status, headers, config) {
+                $scope.lastResponse = data;
                 $scope.init();
             });
         };

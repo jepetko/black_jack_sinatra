@@ -34,6 +34,8 @@ get '/start' do
       black_jack.give_first_cards
     end
   end
+  # return the state of the game after this round
+  BlackJackUtils.get_game_state_as_hash(session).to_json
 end
 
 get '/draw' do
