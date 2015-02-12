@@ -1,6 +1,8 @@
 # black_jack_sinatra
 Sinatra integration of Black Jack
 
+http://jepetko-blackjack.herokuapp.com/
+
 ## start the game
 
 Your name is Jack. You have two buttons: "draw" and "stay". At the beginning they are disabled because the dealer has to give two cards.
