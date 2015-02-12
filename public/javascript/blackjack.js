@@ -27,6 +27,9 @@
             }
             return false;
         };
+        $scope.buildCardPath = function(card) {
+            return 'images/cards/' + (card.sort + '_' + card.type + '.jpg').toLowerCase();
+        };
         $scope.kickOff = function() {
             $http.get('/start')
             .success(function(data, status, headers, config) {

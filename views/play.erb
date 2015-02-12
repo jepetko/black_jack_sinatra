@@ -13,7 +13,6 @@
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <p class="navbar-text navbar-left">Dear {{ownName}}, welcome to this Black Jack game.</p>
-
         <form class="navbar-form navbar-left" role="search">
           <div class="form-group">
             <button type="button" class="btn btn-danger" ng-click="kickOff()" ng-disabled="areFirstCardsGiven()">Kick
@@ -22,21 +21,23 @@
             <button type="button" class="btn btn-danger" ng-click="replay()">Reset game!</button>
           </div>
         </form>
+        <p class="navbar-text navbar-right red" ng-show="isGameOver()">
+            The game seems to be over ;-)
+        </p>
       </div>
     </div>
   </nav>
 
   <!-- application -->
-  <div class="alert alert-warning" role="alert" ng-show="isGameOver()">The game seems to be over ;-)</div>
   <div class="container">
     <!-- players -->
-    <div class="row">
+    <div class="row show-grid">
       <div class="col-md-4" data-ng-repeat="player in players | filter:{dealer:false}">
         <div data-ng-include=" 'templates/playertpl.html' "></div>
       </div>
     </div>
     <!-- dealer -->
-    <div class="row">
+    <div class="row show-grid">
       <div class="col-md-12" data-ng-repeat="player in players | filter:{dealer:true}">
         <div data-ng-include=" 'templates/playertpl.html' "></div>
       </div>

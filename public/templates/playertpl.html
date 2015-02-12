@@ -1,14 +1,16 @@
-<h3>
-    {{player.name}}
+<h2>
+    <span data-ng-if="ownName == player.name">
+        <button type="button" class="btn btn-sm btn-primary" ng-click="draw('Y')" ng-disabled="!canPlayerDraw(player)">Draw</button>
+    </span>
+    <span>{{player.name}}</span>
+    <span data-ng-if="ownName == player.name">
+        <button type="button" class="btn btn-sm btn-warning" ng-click="draw('N')" ng-disabled="!canPlayerDraw(player)">Stay</button>
+    </span>
+    <!-- state -->
+    <br>
     <span class="label label-danger" ng-show="player.busted===true">BUSTED</span>
     <span class="label label-success" ng-show="player.winner===true">WINNER</span>
-</h3>
-<div data-ng-if="ownName == player.name">
-    <button type="button" class="btn btn-primary" ng-click="draw('Y')" ng-disabled="!canPlayerDraw(player)">Draw</button>
-    <button type="button" class="btn btn-default" ng-click="draw('N')" ng-disabled="!canPlayerDraw(player)">Stay</button>
-</div>
-Your current cards are:
-<ul>
-    <li data-ng-repeat="c in player.cards">{{c.type}}</li>
-</ul>
-Sum: {{player.sum}}
+</h2>
+<span class="label label-default">Sum: {{player.sum}}</span>
+<br>
+<img ng-src="{{buildCardPath(c)}}" class="img-thumbnail" data-ng-repeat="c in player.cards" style="height:100px;">

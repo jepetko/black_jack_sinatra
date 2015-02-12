@@ -5,3 +5,14 @@
 .col-md-12 {
     text-align: center;
 }
+
+.red {
+    color: red;
+}
+
+.show-grid [class^=col-] {
+    padding-top:10px;
+    padding-bottom:10px;
+    background-color: #e7e7e7;
+    border:1px solid #fff;
+}
