@@ -4,9 +4,6 @@ class BlackJackUtils
     if session[:name].nil?
       raise 'session[:name] must not be nil'
     end
-    if session[:black_jack].nil?
-      raise 'session[:black_jack] must not be nil'
-    end
     black_jack = BlackJack.new
     session[:black_jack] = black_jack
     black_jack.kick_off? { session[:name] }
