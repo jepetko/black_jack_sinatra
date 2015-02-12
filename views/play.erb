@@ -31,7 +31,13 @@
   <div class="container">
     <!-- players -->
     <div class="row">
-      <div class="col-md-3" data-ng-repeat="player in players">
+      <div class="col-md-4" data-ng-repeat="player in players | filter:{dealer:false}">
+        <div data-ng-include=" 'templates/playertpl.html' "></div>
+      </div>
+    </div>
+    <!-- dealer -->
+    <div class="row">
+      <div class="col-md-12" data-ng-repeat="player in players | filter:{dealer:true}">
         <div data-ng-include=" 'templates/playertpl.html' "></div>
       </div>
     </div>
